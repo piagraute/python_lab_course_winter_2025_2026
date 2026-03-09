@@ -1,0 +1,29 @@
+[project]
+name = "python-lab-course-winter-2025-2026"
+version = "0.1.0"
+description = "Python project for the course 'Python Programming and Basic Machine Learning (211434-WiSe2025/26)'"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "datasets>=4.5.0",
+    "joblib>=1.5.3",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.10.8",
+    "mlxtend>=0.24.0",
+    "opencv-python>=4.13.0.92",
+    "pandas>=3.0.0",
+    "pillow>=12.1.1",
+    "ruff>=0.15.2",
+    "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
+    "skops>=0.13.0",
+    "torch>=2.10.0",
+    "torchinfo>=1.8.0",
+    "torchmetrics>=1.8.2",
+    "torchsummary>=1.5.1",
+    "torchvision>=0.25.0",
+    "transformers>=5.2.0",
+    "ucimlrepo>=0.0.7",
+    "umap-learn>=0.5.11",
+]
+
