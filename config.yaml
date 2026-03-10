@@ -3,9 +3,11 @@ cnn:
   num_epochs: 50
   batch_size: 64
   num_workers: 4
+  seed: 42
 
 mobilenetv2:
   lr: 0.001
   num_epochs: 30
   batch_size: 64
   num_workers: 4
+  seed: 42
