@@ -1,10 +1,11 @@
 cnn:
   lr: 0.01
-  num_epochs: 10
-  foo: bar
-  seed: 42
+  num_epochs: 50
+  batch_size: 64
+  num_workers: 4
+
 mobilenetv2:
-  lr: 0.01
-  num_epochs: 10
-  test: 123
-  seed: 42
+  lr: 0.001
+  num_epochs: 30
+  batch_size: 64
+  num_workers: 4
