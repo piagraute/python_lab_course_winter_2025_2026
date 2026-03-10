@@ -3,6 +3,7 @@
 /.venv/
 /src/data/gtsrb/
 /data/
+/runs/
 
 __pycache__/
 .ipynb_checkpoints/

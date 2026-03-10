@@ -96,8 +96,7 @@ class CNN(nn.Module):
         # Fully connected layers
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
-        self.logger.info("CNN model with Spatial Transformer Network defined")
-        
+
         return x
     
         
