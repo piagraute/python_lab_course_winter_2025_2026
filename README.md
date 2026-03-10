@@ -19,7 +19,7 @@
 ### Augmentation
 - Baseline (Resize, Normalize)
 - Classic (Baseline + ColorJitter, RandomRotation (+-15), RandomAffine)
-- Advanced (Classic + AutoAugment)
+- Advanced (Baseline + AutoAugment)
 
 ### Setup
 - Loss function: CrossEntropy Loss
