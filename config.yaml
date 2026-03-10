@@ -1,2 +1,8 @@
-lr: 0.01,
-num_epochs: 10,
+cnn:
+  lr: 0.01
+  num_epochs: 10
+  foo: bar
+mobilenetv2:
+  lr: 0.01
+  num_epochs: 10
+  test: 123

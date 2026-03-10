@@ -23,7 +23,7 @@ def main(
 
     device = torch.cude("cuda" if torch.cuda.is_available() else "cpu")
     logger = get_logger()
-    config = config_loader()
+    config = config_loader(model_str)
     train_augementation = get_compose(model_str, aug)
     test_augmentation = get_compose(model_str, "baseline")
     train_set, test_set = load_dataset(
