@@ -8,12 +8,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torchvision.transforms import ToTensor, Resize, Compose
 from torchsummary import summary
+from logging import Logger
 
 
 
 class CNN(nn.Module):
-    def __init__(self, nclasses=43):
+    def __init__(self, logger:Logger, nclasses=43):
         super(CNN, self).__init__()
+        self.logger = logger
         self.localization = nn.Sequential(
             nn.Conv2d(in_channels=3, out_channels=8, kernel_size=7),
             nn.MaxPool2d(kernel_size=2, stride=2),
@@ -94,7 +96,8 @@ class CNN(nn.Module):
         # Fully connected layers
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
+        self.logger.info("CNN model with Spatial Transformer Network defined")
         
         return x
     
-    logger.info("CNN model with Spatial Transformer Network defined")
+        
