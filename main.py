@@ -22,6 +22,10 @@ def main(
     experiment_name = f"{model_str}_{aug}Aug_{datetime.now().strftime('%Y%m%d_%H%M')}"
     writer = SummaryWriter(log_dir=f"runs/{experiment_name}")
 
+
+    torch.set_num_threads(3)
+    logger.info("Use 3 CPU threads for training")
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger = get_logger()
 
