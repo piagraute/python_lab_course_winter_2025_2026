@@ -1,10 +1,12 @@
-from torchvision.transforms import Compose
+from torchvision.transforms import AutoAugment, AutoAugmentPolicy, Compose
 from typing import Literal
-from src.data.augmentation.classic import create_classic_augmentation
+from src.data.augmentation.baseline import create_baseline_augmentation
 
 
 def create_advanced_augmentation(model: Literal["cnn", "mobilenetv2"]) -> Compose:
-    classic_aug = create_classic_augmentation(model)
-    ...
-    #TODO
+    baseline_aug = create_baseline_augmentation(model)
+    return Compose([
+        baseline_aug,
+        AutoAugment(policy=AutoAugmentPolicy.CIFAR10)
+    ])
     
