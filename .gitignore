@@ -1,0 +1,7 @@
+/.venv/
+/src/data/gtsrb/
+/data/
+
+__pycache__/
+.ipynb_checkpoints/
+*.ppm
