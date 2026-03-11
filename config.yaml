@@ -4,6 +4,7 @@ cnn:
   batch_size: 64
   num_workers: 4
   seed: 42
+  epoch_save_freq: 1
 
 mobilenetv2:
   lr: 0.001
@@ -11,3 +12,4 @@ mobilenetv2:
   batch_size: 64
   num_workers: 4
   seed: 42
+  epoch_save_freq: 1
