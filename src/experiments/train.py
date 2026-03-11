@@ -8,9 +8,7 @@ from src.experiments.eval import evaluate
 def train(model, train_loader, val_loader, device, config, writer, logger):
     loss_fn = nn.CrossEntropyLoss()
     model = model.to(device)
-
     optimizer = AdamW(model.parameters(), lr=config["lr"])
-
     for epoch in tqdm(range(config["num_epochs"]), desc="Training Epochs"):
         model.train()
         running_loss = 0.0
