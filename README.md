@@ -28,13 +28,6 @@
 - Tracking: Tensorboard
 - Metrics: Accuracy, Macro F1-Score
 
-### TODO
-* alle 20 epochs weights speichern
-* best model 
-* tensorboard
-* fire
-* training
-* präsentation
 
 ### run training
 ```uv run main.py --model_str=<MODEL> --aug=<AUGMENTATION> --is_training=<BOOL>```
