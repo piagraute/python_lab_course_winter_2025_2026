@@ -28,6 +28,7 @@ def main(
     logger.info(f"Experiment start | model = {model_str} | augmentation = {aug} | training = {is_training}")
 
     torch.set_num_threads(3)
+    torch.cuda.memory.set_per_process_memory_fraction(0.33) #set to 0.16 if 2 training runs are executed in parallel
     logger.info("Use 3 CPU threads for training")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
