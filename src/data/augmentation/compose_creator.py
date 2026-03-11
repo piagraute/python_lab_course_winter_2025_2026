@@ -18,7 +18,7 @@ def create_augmentation(
 
     transforms_list = [Resize(size)]
 
-    if level in ["classic", "advanced"]:
+    if level == "classic":
         transforms_list.extend([
             ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
             RandomRotation(degrees=15),
