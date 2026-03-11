@@ -72,7 +72,7 @@ def train(
             torch.save(checkpoint, save_dir / f"checkpoint_{epoch+1}.pt")
             logger.info(f"New checkpoint {epoch} saved.")
 
-        if val_acc > best_val_acc:
+        if is_best:
             best_val_acc = val_acc
             torch.save(checkpoint, save_dir / "best_model.pt")
             logger.info(f"New best model saved (Val Acc: {best_val_acc})")
