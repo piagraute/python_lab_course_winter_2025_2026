@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Literal
 
+import fire
 import torch
 from src.data.augmentation.compose_creator import create_augmentation
 from src.data.dataset_loader import load_dataloaders, load_dataset
@@ -15,19 +16,21 @@ from torch.utils.tensorboard import SummaryWriter
 
 
 def main(
-    model_str: Literal["cnn", "mobilenetv2"],
-    aug: Literal["baseline", "classic", "advanced"],
-    is_training: bool,
+    model_str: Literal["cnn", "mobilenetv2"] = "cnn",
+    aug: Literal["baseline", "classic", "advanced"] = "advanced",
+    is_training: bool = True,
 ):
     experiment_name = f"{model_str}_{aug}Aug_{datetime.now().strftime('%Y%m%d_%H%M')}"
     writer = SummaryWriter(log_dir=f"runs/{experiment_name}")
+  
+    logger = get_logger()
 
+    logger.info(f"Experiment start | model = {model_str} | augmentation = {aug} | training = {is_training}")
 
     torch.set_num_threads(3)
     logger.info("Use 3 CPU threads for training")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    logger = get_logger()
 
     config = config_loader(model_str)
     set_seed(config["seed"])
@@ -35,7 +38,7 @@ def main(
     train_augmentation = create_augmentation(model_str, aug)
     test_augmentation = create_augmentation(model_str, "baseline")
 
-    logger.info("Load dataset for training...")
+    logger.info(f"Load dataset for training with augmentation ({aug})...")
     train_set_aug, test_set = load_dataset(
         "GTSRB",
         logger,
@@ -95,4 +98,5 @@ def main(
 
 
 if __name__ == "__main__":
-    main("cnn", "advanced", True)
+    fire.Fire(main)
+
