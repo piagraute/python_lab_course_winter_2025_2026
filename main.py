@@ -21,7 +21,7 @@ def main(
     is_training: bool = True,
     checkpoint_path: str = None
 ):
-    experiment_name = f"{model_str}_{aug}Aug_{datetime.now().strftime('%Y%m%d_%H%M')}"
+    experiment_name = f"{model_str}_fixed{aug}Aug_{datetime.now().strftime('%Y%m%d_%H%M')}" #f"{model_str}_{aug}Aug_{datetime.now().strftime('%Y%m%d_%H%M')}"
     writer = SummaryWriter(log_dir=f"runs/{experiment_name}")
   
     logger = get_logger()
