@@ -5,7 +5,7 @@ from src.toolbox.logger import get_logger
 
 def full_run():
     logger = get_logger()
-    models = ["cnn", "mobilenetv2"]
+    models = ["mobilenetv2"] #["cnn", "mobilenetv2"]
     aug_levels = ["baseline", "classic", "advanced"]
     for model in models:
         for aug_level in aug_levels:

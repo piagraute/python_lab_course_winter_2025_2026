@@ -1,4 +1,3 @@
-
 import torch.nn as nn
 from torch.optim import AdamW
 from tqdm import tqdm
@@ -76,3 +75,69 @@ def train(
             best_val_acc = val_acc
             torch.save(checkpoint, save_dir / "best_model.pt")
             logger.info(f"New best model saved (Val Acc: {best_val_acc})")
+
+def train_mobilenet_finetuning(model, train_loader, val_loader, device, config, writer, logger):
+    model = model.to(device)
+
+    # Phase 1: alles einfrieren
+    logger.info("freeze all layers except classifier head...")
+    freeze_all_layers(model)
+    unfreeze_classifier(model)
+
+    logger.info("Phase 1: Training classifier head...") 
+    print_trainable_parameters(model, logger)
+
+    config_phase1 = dict(config)
+    config_phase1["num_epochs"] = config["num_epochs_head"]
+    config_phase1["lr"] = config["lr_head"]
+
+    train(model=model,
+          train_loader=train_loader,
+          val_loader=val_loader,
+          device=device,
+          config=config_phase1,
+          writer=writer,
+          logger=logger,
+          optimizer_state=None,
+          start_epoch=0,
+          best_val_acc=0.0)
+
+    # Phase 2: gebe letzte backbone-blöcke frei
+    logger.info(f"Phase 2: unfreeze last backbone blocks and fine-tuning entire model...")
+    unfreeze_last_mobilenet_blocks(model)
+    print_trainable_parameters(model, logger)
+
+    config_phase2 = dict(config)
+    config_phase2["num_epochs"] = config["num_epochs_head"] + config["num_epochs_finetune"]
+    config_phase2["lr"] = config["lr_head"]
+
+    train(model=model,
+          train_loader=train_loader,
+          val_loader=val_loader,
+          device=device,
+          config=config_phase2,
+          writer=writer,
+          logger=logger,
+          optimizer_state=None,
+          start_epoch=0,
+          best_val_acc=0.0)
+    
+
+def freeze_all_layers(model):
+    for param in model.parameters():
+        param.requires_grad = False
+
+def unfreeze_classifier(model):
+    for param in model.classifier.parameters():
+        param.requires_grad = True
+
+def unfreeze_last_mobilenet_blocks(model, num_blocks=3):
+    for param in model.features[-num_blocks:].parameters():
+        param.requires_grad = True
+
+def print_trainable_parameters(model, logger):
+    logger.info("Trainable parameters:")
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            logger.info(f" - {name}")
+

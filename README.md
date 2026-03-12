@@ -28,6 +28,14 @@
 - Tracking: Tensorboard
 - Metrics: Accuracy, Macro F1-Score
 
+### Training
+mobileNetV2:
+1. load model with pretrained weights
+2. freeze backbone
+3. train only the classifyer
+4. unfreeze last backbones blocks
+5. continue training with smaller learning rate
+
 
 ### run training
 ```uv run main.py --model_str=<MODEL> --aug=<AUGMENTATION> --is_training=<BOOL>```

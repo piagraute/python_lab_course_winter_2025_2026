@@ -4,6 +4,7 @@
 /src/data/gtsrb/
 /data/
 /runs/
+/eval/
 
 __pycache__/
 .ipynb_checkpoints/

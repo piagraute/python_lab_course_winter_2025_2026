@@ -42,12 +42,11 @@ def load_dataset(
     logger.info(f"Shape of test data: {len(test_data)}")
     return train_data, test_data
 
-
-def load_dataloaders(dataset, batch_size, num_workers):
+def load_dataloaders(dataset, batch_size, num_workers, shuffle=True):
     return torch.utils.data.DataLoader(
         dataset,
         batch_size=batch_size,
-        shuffle=True,
+        shuffle=shuffle,
         num_workers=num_workers,
         pin_memory=True,
     )

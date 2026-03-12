@@ -2,7 +2,7 @@ import torch.nn as nn
 from torchvision.models import MobileNet_V2_Weights, mobilenet_v2
 
 
-def build_mobilenet_v2(num_classes: int = 43, is_pretrained: bool = False):
+def build_mobilenet_v2(num_classes: int = 43, is_pretrained: bool = True):
     if is_pretrained:
         weights = MobileNet_V2_Weights.DEFAULT
     else:
