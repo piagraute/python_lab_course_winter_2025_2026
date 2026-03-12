@@ -133,7 +133,7 @@ def main(
             test_set, config["batch_size"], config["num_workers"]
         )
 
-        test_loss, test_acc = evaluate(model, test_loader, device)
+        test_loss, test_acc = evaluate(model, test_loader, device, plot_cm=True)
         logger.info(
             f"Final test scores --> Loss: {test_loss:.4f} | Accuracy: {test_acc*100:.2f}%"
         )

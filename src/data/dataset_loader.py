@@ -1,11 +1,13 @@
 from logging import Logger
 from pathlib import Path
 from typing import Literal
-from src.toolbox.logger import get_logger
+
 import matplotlib.pyplot as plt
 import torch
 from torchvision import datasets
 from torchvision.transforms import Compose, ToTensor
+
+from src.toolbox.logger import get_logger
 
 
 def load_dataset(
@@ -14,16 +16,16 @@ def load_dataset(
     root_path: Path = Path("data"),
     train_transform: Compose = ToTensor(),
     test_transform: Compose = ToTensor(),
-):  
-    
+):
+
     if dataset == "GTSRB":
         if Path.is_dir(root_path / "gtsrb"):
             logger.info("Found downloaded model. Skipping download...")
             is_download = False
-        else: 
+        else:
             is_download = True
             logger.info(f"Start loading dataset {dataset}...")
-        
+
         train_data = datasets.GTSRB(
             root=root_path,
             split="train",
@@ -40,13 +42,14 @@ def load_dataset(
     logger.info(f"Shape of test data: {len(test_data)}")
     return train_data, test_data
 
+
 def load_dataloaders(dataset, batch_size, num_workers):
     return torch.utils.data.DataLoader(
         dataset,
         batch_size=batch_size,
         shuffle=True,
         num_workers=num_workers,
-        pin_memory=True
+        pin_memory=True,
     )
 
 
@@ -72,4 +75,3 @@ if __name__ == "__main__":
     logger = get_logger()
     train, test = load_dataset("GTSRB", logger)
     plot_dataset(train, logger)
-    
