@@ -6,7 +6,7 @@ import torch
 from src.data.augmentation.compose_creator import create_augmentation
 from src.data.dataset_loader import load_dataloaders, load_dataset
 from src.experiments.eval import evaluate
-from src.experiments.train import train
+from src.experiments.train import train, train_mobilenet_finetuning
 from src.models.model_loader import load_model
 from src.toolbox.config_loader import config_loader
 from src.toolbox.logger import get_logger
@@ -106,31 +106,42 @@ def main(
 
         logger.info("Load data loaders...")
         train_loader = load_dataloaders(
-            real_train_set, config["batch_size"], config["num_workers"]
+            real_train_set, config["batch_size"], config["num_workers"], shuffle=True
         )
         val_loader = load_dataloaders(
-            val_set, config["batch_size"], config["num_workers"]
+            val_set, config["batch_size"], config["num_workers"], shuffle=False
         )
 
         logger.info("Start training...")
-        train(
-            model, 
-            train_loader, 
-            val_loader, 
-            device, 
-            config, 
-            writer, 
-            logger,
-            optimizer_state=optimizer_state,
-            start_epoch=start_epoch,
-            best_val_acc=best_val_acc
-        )
+        if model_str == "mobilenetv2":
+            train_mobilenet_finetuning(
+                model, 
+                train_loader, 
+                val_loader, 
+                device, 
+                config, 
+                writer, 
+                logger
+            )
+        else:
+            train(
+                model, 
+                train_loader, 
+                val_loader, 
+                device, 
+                config, 
+                writer, 
+                logger,
+                optimizer_state=optimizer_state,
+                start_epoch=start_epoch,
+                best_val_acc=best_val_acc
+            )
 
     else:
         # evaluation
         logger.info("Start evaluation on test set...")
         test_loader = load_dataloaders(
-            test_set, config["batch_size"], config["num_workers"]
+            test_set, config["batch_size"], config["num_workers"], shuffle=False
         )
 
         test_loss, test_acc = evaluate(model, test_loader, device)
