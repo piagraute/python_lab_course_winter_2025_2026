@@ -37,12 +37,13 @@ def evaluate(model, loader, device, writer=None, epoch=None, plot_cm=False, cm_o
     avg_loss = running_loss / len(loader)
     accuracy = correct / total
     
-    if writer and epoch is not None:
+    if writer:
+        epoch = epoch if epoch is not None else 0
         writer.add_scalar("Loss/Validation", avg_loss, epoch)
         writer.add_scalar("Accuracy/Validation", accuracy, epoch)
 
     if plot_cm:
-        cm = confusion_matrix(all_labels, all_preds)
+        cm = confusion_matrix(all_labels, all_preds, normalize="true")
         
         epoch_str = f"_epoch_{epoch}" if epoch is not None else "_final"
         out_filename = os.path.join(cm_out_dir, f"confusion_matrix{epoch_str}.png")
@@ -58,7 +59,7 @@ def plot_confusion_matrix(cm, num_classes, out_filename):
     
     show_numbers = True if num_classes <= 20 else False
     
-    sns.heatmap(cm, annot=show_numbers, fmt='d', cmap='Blues', 
+    sns.heatmap(cm, annot=show_numbers, fmt='d', cmap='viridis', 
                 cbar=True, square=True)
     
     plt.title('Confusion Matrix', fontsize=18, fontweight='bold', pad=20)
@@ -69,5 +70,5 @@ def plot_confusion_matrix(cm, num_classes, out_filename):
     
     os.makedirs(os.path.dirname(out_filename), exist_ok=True)
     plt.savefig(out_filename, dpi=300, bbox_inches='tight')
-    print(f"Confusion Matrix gespeichert unter: {out_filename}")
+    print(f"Confusion Matrix saved to: {out_filename}")
     plt.close()

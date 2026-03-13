@@ -18,15 +18,17 @@ from pathlib import Path
 def main(
     model_str: Literal["cnn", "mobilenetv2"] = "cnn",
     aug: Literal["baseline", "classic", "advanced"] = "advanced",
-    is_training: bool = True,
+    is_training: bool = False,
     checkpoint_path: str = None
 ):
     experiment_name = f"{model_str}_{aug}Aug_{datetime.now().strftime('%Y%m%d_%H%M')}"
+   
     writer = SummaryWriter(log_dir=f"runs/{experiment_name}")
   
     logger = get_logger()
-
+    logger.info(f"Writing to {experiment_name}...")
     logger.info(f"Experiment start | model = {model_str} | augmentation = {aug} | training = {is_training}")
+    logger.debug(f"Training Status: {is_training}")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.set_num_threads(3)
     logger.info("Use 3 CPU threads for training")
@@ -66,6 +68,7 @@ def main(
     best_val_acc = 0.0
     optimizer_state = None
 
+    logger.debug(f"Training mode status: {is_training}")
     if checkpoint_path is not None:
         if Path(checkpoint_path).is_file():
             logger.info(f"Load checkpoint from: {checkpoint_path}")
@@ -86,8 +89,9 @@ def main(
         else:
             logger.error(f"Couldn't find checkpoint at: {checkpoint_path}")
             return 
-
+    logger.debug(f"Training mode status: {is_training}")
     if is_training:
+        logger.debug("Entering training code...")
         total_train_size = len(train_set_aug)
         train_size = int(0.8 * total_train_size)
 
@@ -102,7 +106,7 @@ def main(
         real_train_set = Subset(train_set_aug, train_indices)
         val_set = Subset(
             train_set_clean, val_indices
-        )  # <- Hier ist der Zauber! Keine Augmentations!
+        )  
 
         logger.info("Load data loaders...")
         train_loader = load_dataloaders(
@@ -144,10 +148,11 @@ def main(
             test_set, config["batch_size"], config["num_workers"], shuffle=False
         )
 
-        test_loss, test_acc = evaluate(model, test_loader, device, plot_cm=True)
+        test_loss, test_acc = evaluate(model, test_loader, device, writer, plot_cm=True)
         logger.info(
             f"Final test scores --> Loss: {test_loss:.4f} | Accuracy: {test_acc*100:.2f}%"
         )
+        return test_loss, test_acc
 
 
 if __name__ == "__main__":

@@ -71,11 +71,10 @@ class CNN(nn.Module):
         xs = self.localization(x)
         xs = torch.flatten(xs, 1)
         
-        # Compute theta (affine transformation parameters)
         theta = self.fc_loc(xs)
         theta = theta.view(-1, 2, 3)
         
-        # Generate sampling grid and sample the input
+        # Generate sampling grid and sample input
         grid = F.affine_grid(theta, x.size(), align_corners=False)
         x = F.grid_sample(x, grid, align_corners=False)
         

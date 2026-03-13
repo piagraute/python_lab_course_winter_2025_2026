@@ -79,7 +79,7 @@ def train(
 def train_mobilenet_finetuning(model, train_loader, val_loader, device, config, writer, logger):
     model = model.to(device)
 
-    # Phase 1: alles einfrieren
+    # phase 1: freeze weights
     logger.info("freeze all layers except classifier head...")
     freeze_all_layers(model)
     unfreeze_classifier(model)
@@ -102,7 +102,7 @@ def train_mobilenet_finetuning(model, train_loader, val_loader, device, config, 
           start_epoch=0,
           best_val_acc=0.0)
 
-    # Phase 2: gebe letzte backbone-blöcke frei
+    # phase 2: unfreeze
     logger.info(f"Phase 2: unfreeze last backbone blocks and fine-tuning entire model...")
     unfreeze_last_mobilenet_blocks(model)
     print_trainable_parameters(model, logger)

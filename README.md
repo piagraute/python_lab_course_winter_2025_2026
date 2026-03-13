@@ -26,9 +26,9 @@
 - Optimizer: AdamW
 - LR Scheduler: ReduceLROnPlateau
 - Tracking: Tensorboard
-- Metrics: Accuracy, Macro F1-Score
+- Metrics: Accuracy
 
-### Training
+### finetune Training
 mobileNetV2:
 1. load model with pretrained weights
 2. freeze backbone
